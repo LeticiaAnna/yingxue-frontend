@@ -2,7 +2,7 @@ import axios from 'axios'
 
 //创建默认实例
 const instance = axios.create({
-  baseURL:"http://localhost:9999/yingx",
+  baseURL:"http://localhost:8989/yingxue",
   timeout:3000,
 
 })
@@ -10,10 +10,10 @@ const instance = axios.create({
 instance.interceptors.request.use(config=>{
   let token = localStorage.getItem("token");
 
-  if (config.url.indexOf("/login")!=-1) // 是登录
+  if (config.url.indexOf("/login")!==-1) // 是登录
     return config;
 
-  if (config.url.indexOf("?")!=-1) // 访问网址中已有参数需要&连接参数
+  if (config.url.indexOf("?")!==-1) // 访问网址中已有参数需要&连接参数
     config.url+="&token="+token
   else   // 访问网址中已有参数需要?连接参数
     config.url+="?token="+token

@@ -78,7 +78,8 @@ export default {
           instance.post("/admin/login?token="+this.token, this.admin)
             .then((res)=>{
 
-                if(res.data.state=="success"){
+                if(res.data.state==="success"){
+                  alert(this.admin.username +" 登录成功")
 
                   //存储用户标记
                   localStorage.setItem("token",res.data.message);
@@ -88,7 +89,8 @@ export default {
                 }else{
                   //登录失败展示错误信息
                   this.loginMsg=res.data.message;
-
+                  this.admin.password = "";
+                  this.switchImg();
                   this.logining=false;
                 }
               }
@@ -101,7 +103,9 @@ export default {
     },
     switchImg(){  //点击切换验证码方法
       //调用获取验证码方法获取验证码
-      instance.post("/admin/getImageCodes?d="+new Date().getTime())
+      instance.post("/admin/getImageCodes",{
+        d:new Date().getTime()
+      })
         .then((res)=>{
 			this.token = res.data.token;
             this.imgCode=res.data.imgCode
@@ -111,7 +115,9 @@ export default {
   },
   created() {
     //调用获取验证码方法获取验证码
-    instance.get("/admin/getImageCodes?d="+new Date().getTime())
+    instance.post("/admin/getImageCodes",{
+      d:new Date().getTime()
+    })
       .then((res)=>{
 
           //存储用户标记
