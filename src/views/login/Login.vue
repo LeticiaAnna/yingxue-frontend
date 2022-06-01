@@ -94,6 +94,7 @@ export default {
                   this.loginMsg=res.data.message;
                   this.$message.error(res.data.message);
                   this.admin.password = "";
+                  this.admin.enCode = "";
                   this.switchImg();
                   this.logining=false;
                 }

@@ -118,10 +118,14 @@ export default {
         .then(res=>{
           //移除登录标记
           localStorage.removeItem("token");
-
+          this.$message({
+            message: this.admin.username + " 退出成功",
+            type: 'success'
+          });
           //给用户名重新赋值
           this.admin = {username:'游客'};
           this.$router.push({name: 'Login'});
+
         })
         .catch(err => {
           this.$message.error(err.response.data.message);

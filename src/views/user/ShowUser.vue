@@ -7,7 +7,7 @@
 
 
       <!--   表单数据展示   -->
-      <el-table border style="width: 100%" :row-class-name="tableRowClassName" :data="users.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))">
+      <el-table border style="width: 100%" :row-class-name="tableRowClassName" :data="users">
 
         <!--    复选框列    -->
         <el-table-column type="selection" width="55"></el-table-column>
