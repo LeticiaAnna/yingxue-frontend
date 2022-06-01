@@ -24,7 +24,7 @@
 
       </el-form-item>
 
-      <h3 style="color: red">{{loginMsg}}</h3>
+      <h3 style="color: red" hidden>{{loginMsg}}</h3>
 
       <el-form-item style="width:100%;">
         <el-button type="primary" style="width:100%;" @click="submitLogin" :loading="logining">登录</el-button>
@@ -46,8 +46,8 @@ export default {
       token:"",
       loginMsg:"",
       admin: {
-        username: "admin",
-        password: "123456",
+        username: "smart_cattt",
+        password: "peiqi1314",
         enCode:"",
       },
       checkForm: {
@@ -79,7 +79,10 @@ export default {
             .then((res)=>{
 
                 if(res.data.state==="success"){
-                  alert(this.admin.username +" 登录成功")
+                  this.$message({
+                    message: this.admin.username + " 登录成功",
+                    type: 'success'
+                  });
 
                   //存储用户标记
                   localStorage.setItem("token",res.data.message);
@@ -89,6 +92,7 @@ export default {
                 }else{
                   //登录失败展示错误信息
                   this.loginMsg=res.data.message;
+                  this.$message.error(res.data.message);
                   this.admin.password = "";
                   this.switchImg();
                   this.logining=false;
@@ -114,6 +118,20 @@ export default {
     }
   },
   created() {
+    let token = localStorage.getItem("token");
+
+    //判断用户是否有登录标记
+    if(token != null){
+      instance.get("/admin/getUserInfo")
+        .then(res=>{
+          this.$router.push({name: 'MainView'});
+        })
+        .catch(err => {
+          this.$router.push({name: 'Login'});
+        });
+
+    }
+
     //调用获取验证码方法获取验证码
     instance.post("/admin/getImageCodes",{
       d:new Date().getTime()

@@ -92,7 +92,7 @@
           <router-view></router-view>
         </el-main>
       </el-container><br>
-      <el-footer align="center">zparkhr@zhangcn.cn</el-footer>
+      <el-footer align="center">love@annna.cn</el-footer>
     </el-container>
 
   </div>
@@ -123,7 +123,24 @@ export default {
           this.admin = {username:'游客'};
           this.$router.push({name: 'Login'});
         })
-        .catch(err => this.$message.error('操作异常,请稍后再试!'));
+        .catch(err => {
+          this.$message.error(err.response.data.message);
+          let token = localStorage.getItem("token");
+
+          //判断用户是否有登录标记
+          if(token==null){
+            this.admin = {username:"游客"}
+            this.$router.push({name: 'Login'});
+          }else{
+            instance.get("/admin/getUserInfo")
+              .then(res=>{
+                this.admin=res.data
+              })
+              .catch(err => {
+                this.$router.push({name: 'Login'});
+              });
+          }
+        });
     },
     /*userInfo() {//获取登录用户信息
       getUser().then(res => {
@@ -132,16 +149,15 @@ export default {
     }*/
   },
   created(){
-    let token = localStorage.getItem("token");
 
-    //判断用户是否有登录标记
-    if(token==null){
+    //强制登录
+    if(localStorage.getItem("token") == null){
       this.admin = {username:"游客"}
       this.$router.push({name: 'Login'});
     }else{
       instance.get("/admin/getUserInfo")
         .then(res=>{
-          this.admin=res.data
+          this.admin = res.data
         })
         .catch(err => {
         this.$router.push({name: 'Login'});
