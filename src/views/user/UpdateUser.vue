@@ -15,6 +15,10 @@
               <el-input v-model="user.username"></el-input>
             </el-form-item>
 
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="user.password"></el-input>
+            </el-form-item>
+
             <el-form-item label="签名" prop="sign">
               <el-input v-model="user.sign"></el-input>
             </el-form-item>
@@ -95,6 +99,7 @@ export default {
       msg: "用户修改",
       user: {
         username: '',
+        password:"",
         sign: '',
         headImg: '',
         phone: '',
@@ -144,8 +149,12 @@ export default {
       },
       rules: {
         username: [
-          {required: true, message: '请输入活动名称', trigger: 'blur'},
-          {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+          {required: true, message: '请输入用户名', trigger: 'blur'},
+          {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {min: 8, max: 30, message: '长度在 8 到 30 个字符', trigger: 'blur'}
         ],
         sign: [
           {required: true, message: '请输入签名', trigger: 'blur'}

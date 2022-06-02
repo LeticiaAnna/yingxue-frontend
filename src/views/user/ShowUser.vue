@@ -12,18 +12,19 @@
         <!--    复选框列    -->
         <el-table-column type="selection" width="55"></el-table-column>
         <!--    数据列    -->
-        <el-table-column prop="id" label="用户id" width="180" sortable></el-table-column>
-        <el-table-column prop="username" label="名称" width="180"></el-table-column>
-        <el-table-column prop="headImg" label="头像">
+        <el-table-column prop="id" label="用户id" width="90" sortable></el-table-column>
+        <el-table-column prop="username" label="用户名" width="100"></el-table-column>
+        <el-table-column prop="password" label="密码" width="120"></el-table-column>
+        <el-table-column prop="headImg" label="头像" width="80">
           <template slot-scope="scope">
             <el-image :src="scope.row.headImg" style="height: 50px"></el-image>
           </template>
         </el-table-column>
 
-        <el-table-column prop="phone" label="手机号"></el-table-column>
-        <el-table-column prop="sign" label="签名"></el-table-column>
-        <el-table-column prop="score" label="学分" sortable></el-table-column>
-        <el-table-column prop="status" label="状态">
+        <el-table-column prop="phone" label="手机号" width="120"></el-table-column>
+        <el-table-column prop="sign" label="签名" width="210"></el-table-column>
+        <el-table-column prop="score" label="学分" width="90" sortable></el-table-column>
+        <el-table-column prop="status" label="状态" width="100">
           <template slot-scope="scope">
             <el-button type="warning" v-if="scope.row.status==0" @click="changeStatus(scope.row)" >冻结</el-button>
             <el-button type="success" v-else @click="changeStatus(scope.row)" >正常</el-button>
@@ -31,13 +32,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="createTime" label="注册时间" sortable></el-table-column>
+        <el-table-column prop="createTime" label="注册时间" sortable width="100"></el-table-column>
 
         <!--    操作列    -->
         <el-table-column >
-          <template slot="header" slot-scope="scope">
-            <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
-          </template>
           <template slot-scope="scope">
             <el-button size="mini" @click="updateUser(scope.row.id)">编辑</el-button>
             <el-button size="mini" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
