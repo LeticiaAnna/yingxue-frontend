@@ -3,7 +3,7 @@
   <div >
     <h1 align="center"><strong>{{ msg }}</strong></h1>
     <div ><br>
-    <router-link :to="{name:'AddUser'}"  ><el-button type="primary">添加员工</el-button></router-link><br><br>
+    <router-link :to="{name:'AddUser'}"  ><el-button type="primary">添加账户</el-button></router-link><br><br>
 
 
       <!--   表单数据展示   -->
@@ -122,6 +122,7 @@ export default {
       })
     },
     deleteUser(id){
+      console.log(id)
       /**1.删除确认提示框*/
       if(window.confirm("您确定要删除该数据吗?")){
         /**2.发送请求删除数据*/
@@ -130,10 +131,14 @@ export default {
           this.queryUser(1,this.pageSize);
 
           /**4.删除提示框*/
-          this.$message({
-            message: res.data.message, //提示框提示的信息
-            type: 'success',  //提示框颜色样式
-          });
+          if (res.data.status === 200){
+            this.$message({
+              message: res.data.message, //提示框提示的信息
+              type: 'success',  //提示框颜色样式
+            });
+          }else {
+            this.$message.error(res.data.message);
+          }
         });
       }
     },
@@ -143,14 +148,20 @@ export default {
       if(row.status=="1"){
         /**2.发送修改请求*/
         instance.post("/user/update",{"id":row.id,"status":"0"}).then((res)=>{
+          console.log(res)
           /**3.查询所有数据*/
           this.queryUser(this.page,this.pageSize);
 
           /**4.修改提示框*/
-          this.$message({
-            message: res.data.message, //提示框提示的信息
-            type: 'success',  //提示框颜色样式
-          });
+          if (res.data.status === 200){
+            this.$message({
+              message: res.data.message, //提示框提示的信息
+              type: 'success',  //提示框颜色样式
+            });
+          }else {
+            this.$message.error(res.data.message);
+          }
+
         });
       }else{
         /**2.发送修改请求*/
@@ -159,10 +170,14 @@ export default {
           this.queryUser(this.page,this.pageSize);
 
           /**4.修改提示框*/
-          this.$message({
-            message: res.data.message, //提示框提示的信息
-            type: 'success',  //提示框颜色样式
-          });
+          if (res.data.status === 200){
+            this.$message({
+              message: res.data.message, //提示框提示的信息
+              type: 'success',  //提示框颜色样式
+            });
+          }else {
+            this.$message.error(res.data.message);
+          }
         });
       }
     },

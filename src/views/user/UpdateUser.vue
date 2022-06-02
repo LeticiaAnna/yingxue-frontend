@@ -58,7 +58,7 @@
             </el-form-item>
 
             <el-form-item label="创建时间" prop="createTime">
-              <el-date-picker value-format="yyyy-MM-dd" v-model="user.createTime" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
+              <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="user.createTime" align="right" type="datetime" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
             </el-form-item>
 
             <el-form-item label="城市" prop="city">
@@ -68,7 +68,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="updateSubmits('user')">立即创建</el-button>
+              <el-button type="primary" @click="updateSubmits('user')">更新账户</el-button>
               <el-button @click="resetForm('user')" type="warning">重置</el-button>
               <router-link :to="{name:'ShowUser'}" ><el-button type="danger">取消</el-button></router-link>
             </el-form-item>
@@ -174,7 +174,14 @@ export default {
   methods:{
     updateSubmits(){
       instance.post("/user/update",this.user).then((res)=>{
-
+        if (res.data.status === 200){
+          this.$message({
+            message: res.data.message, //提示框提示的信息
+            type: 'success',  //提示框颜色样式
+          });
+        }else {
+          this.$message.error(res.data.message);
+        }
         //切换到查所有组件
         this.$router.push({name:"ShowUser"});
       });
@@ -191,7 +198,9 @@ export default {
       //切换到查所有组件
       //this.$router.push({name:"/ShowEmp"});
       this.user=res.data;
-    });
+    }).catch(err => {
+      this.$message.error(err.response.data.message);
+    })
   }
 
 }
