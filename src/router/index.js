@@ -21,6 +21,9 @@ export default new Router({
         {name: 'ShowUser',path: 'showUser',component: ()=> import("../views/user/ShowUser")},
         {name: 'AddUser',path: 'addUser',component: ()=> import("../views/user/AddUser")},
         {name: 'UpdateUser',path: 'updateUser',component: ()=> import("../views/user/UpdateUser")},
+        {name: 'ShowCategory',path: 'showCategory',component: ()=> import("../views/category/ShowCategory")},
+        {name: 'AddCategory',path: 'addCategory',component: ()=> import("../views/category/AddCategory")},
+        {name: 'UpdateCategory',path: 'updateCategory',component: ()=> import("../views/category/UpdateCategory")},
       ]},
     {path: "*",name:"Error404",component:()=>import("../views/error/404")}
   ]

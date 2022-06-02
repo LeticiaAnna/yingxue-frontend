@@ -48,7 +48,7 @@
             <el-submenu index="3">
               <template slot="title"><i class="el-icon-ice-tea"></i>类别管理</template>
               <el-menu-item index="3-1">
-                <router-link to="/category"><el-button type="warning">类别信息</el-button></router-link>
+                <router-link to="/showCategory"><el-button type="warning">类别信息</el-button></router-link>
               </el-menu-item>
             </el-submenu>
 
