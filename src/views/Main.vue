@@ -55,10 +55,10 @@
             <el-submenu index="4">
               <template slot="title"><i class="el-icon-trophy"></i>视频管理</template>
               <el-menu-item index="4-1">
-                <router-link to="/video"><el-button type="warning">视频管理</el-button></router-link>
+                <router-link to="/showVideo"><el-button type="warning">视频管理</el-button></router-link>
               </el-menu-item>
               <el-menu-item index="4-2">
-                <router-link to="/search"><el-button type="warning">视频搜索</el-button></router-link>
+                <router-link to="/searchVideo"><el-button type="warning">视频搜索</el-button></router-link>
               </el-menu-item>
             </el-submenu>
 

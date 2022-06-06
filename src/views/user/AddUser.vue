@@ -34,7 +34,7 @@
                 class="upload-demo"
                 ref="upload"
                 name="headImg"
-                action="http://localhost:9191/yingx/user/uploadHeadImg"
+                action="http://localhost:8989/yingxue/user/uploadHeadImg"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :on-success="uploadSuccess"
@@ -212,18 +212,27 @@ export default {
       this.$refs[formName].resetFields();
     },
     uploadSuccess(response, file, fileList){
+      console.log(response);
       /*console.log(file);
       console.log(response.message);*/
       //接收后台文件上传的文件名并赋值给表单文件属性
+      if (response.status === 200){
+        this.$message({
+          message: response.message, //提示框提示的信息
+          type: 'success',  //提示框颜色样式
+        });
+      }else {
+        this.$message.error(response.message);
+      }
       this.user.headImg=response.fileName;
     },
     submitUpload() {   //点击文件上传触发
       this.$refs.upload.submit();
     },
-    handleRemove(file, fileList) {   //点击文件列表中已上传的文件时的钩子
+    handleRemove(file, fileList) {   //文件列表移除文件时的钩子
       console.log(file, fileList);
     },
-    handlePreview(file) {   //文件列表移除文件时的钩子
+    handlePreview(file) {   //点击文件列表中已上传的文件时的钩子
       console.log(file);
     }
   }

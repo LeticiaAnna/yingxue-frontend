@@ -24,6 +24,10 @@ export default new Router({
         {name: 'ShowCategory',path: 'showCategory',component: ()=> import("../views/category/ShowCategory")},
         {name: 'AddCategory',path: 'addCategory',component: ()=> import("../views/category/AddCategory")},
         {name: 'UpdateCategory',path: 'updateCategory',component: ()=> import("../views/category/UpdateCategory")},
+        {name: 'ShowVideo',path: 'showVideo',component: ()=> import("../views/video/ShowVideo")},
+        {name: 'AddVideo',path: 'addVideo',component: ()=> import("../views/video/AddVideo")},
+        {name: 'UpdateVideo',path: 'updateVideo',component: ()=> import("../views/video/UpdateVideo")},
+        {name: 'SearchVideo',path: 'searchVideo',component: ()=> import("../views/video/SearchVideo")},
       ]},
     {path: "*",name:"Error404",component:()=>import("../views/error/404")}
   ]

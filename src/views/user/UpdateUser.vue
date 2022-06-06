@@ -35,7 +35,7 @@
                 class="upload-demo"
                 ref="upload"
                 name="headImg"
-                action="http://localhost:9191/yingx/user/uploadHeadImg"
+                :action="action"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :on-success="uploadSuccess"
@@ -43,6 +43,7 @@
                 :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                <el-button size="small" type="danger" @click="deleteHead">删除头像</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
               </el-upload>
             </el-form-item>
@@ -108,6 +109,7 @@ export default {
         sex: '',
         city: ''
       },
+      action:'',
       fileList: [
         /*{
           name: 'food.jpeg',
@@ -194,6 +196,43 @@ export default {
         //切换到查所有组件
         this.$router.push({name:"ShowUser"});
       });
+    },
+    uploadSuccess(response, file, fileList){
+      console.log(response);
+      /*console.log(file);
+      console.log(response.message);*/
+      //接收后台文件上传的文件名并赋值给表单文件属性
+      if (response.status === 200){
+        this.$message({
+          message: response.message, //提示框提示的信息
+          type: 'success',  //提示框颜色样式
+        });
+      }else {
+        this.$message.error(response.message);
+      }
+      this.user.headImg=response.fileName;
+    },
+    submitUpload() {   //点击文件上传触发
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {   //文件列表移除文件时的钩子
+      console.log(file, fileList);
+    },
+    handlePreview(file) {   //点击文件列表中已上传的文件时的钩子
+      console.log(file);
+    },
+    deleteHead(){
+      instance.post("/user/deleteHead?oldHeadImg=" + this.user.headImg.substring(this.user.headImg.indexOf("yingxue/images/head/"))).then((res)=>{
+        if (res.data.status === 200){
+          this.user.headImg = "";
+          this.$message({
+            message: res.data.message, //提示框提示的信息
+            type: 'success',  //提示框颜色样式
+          });
+        }else {
+          this.$message.error(res.data.message);
+        }
+      });
     }
   },
   created() {
@@ -207,6 +246,8 @@ export default {
       //切换到查所有组件
       //this.$router.push({name:"/ShowEmp"});
       this.user=res.data;
+      this.action = "http://localhost:8989/yingxue/user/uploadHeadImg?oldHeadImg=" + this.user.headImg.substring(this.user.headImg.indexOf("yingxue/images/head/"))
+      console.log(this.action);
     }).catch(err => {
       this.$message.error(err.response.data.message);
     })
