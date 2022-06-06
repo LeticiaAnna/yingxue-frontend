@@ -115,7 +115,8 @@ export default {
       this.queryVideo(page,this.pageSize);
     },
     queryVideo(page,pageSize){  //查询所有数据的方法
-      instance.post("/video/queryAllPage",{"page":page,"pageSize":pageSize}).then((res)=>{
+      console.log(page,pageSize);
+      instance.post("/video/queryAllPage?page="+page+"&pageSize="+pageSize).then((res)=>{
 
         //数据赋值
         this.videos=res.data.rows;
@@ -134,10 +135,14 @@ export default {
           this.queryVideo(1,this.pageSize);
 
           /**4.删除提示框*/
-          this.$message({
-            message: res.data.message, //提示框提示的信息
-            type: 'success',  //提示框颜色样式
-          });
+          if (res.data.status === 200){
+            this.$message({
+              message: res.data.message, //提示框提示的信息
+              type: 'success',  //提示框颜色样式
+            });
+          }else {
+            this.$message.error(res.data.message);
+          }
         });
       }
     },
@@ -151,10 +156,14 @@ export default {
           this.queryVideo(this.page,this.pageSize);
 
           /**4.修改提示框*/
-          this.$message({
-            message: res.data.message, //提示框提示的信息
-            type: 'success',  //提示框颜色样式
-          });
+          if (res.data.status === 200){
+            this.$message({
+              message: res.data.message, //提示框提示的信息
+              type: 'success',  //提示框颜色样式
+            });
+          }else {
+            this.$message.error(res.data.message);
+          }
         });
       }else{
         /**2.发送修改请求*/
@@ -163,10 +172,14 @@ export default {
           this.queryVideo(this.page,this.pageSize);
 
           /**4.修改提示框*/
-          this.$message({
-            message: res.data.message, //提示框提示的信息
-            type: 'success',  //提示框颜色样式
-          });
+          if (res.data.status === 200){
+            this.$message({
+              message: res.data.message, //提示框提示的信息
+              type: 'success',  //提示框颜色样式
+            });
+          }else {
+            this.$message.error(res.data.message);
+          }
         });
       }
     },

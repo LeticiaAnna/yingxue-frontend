@@ -19,14 +19,18 @@
               <el-input v-model="video.description"></el-input>
             </el-form-item>
 
-            <el-form-item label="头像" prop="headImg">
+            <el-form-item label="用户ID" prop="userId">
+              <el-input v-model="video.userId"></el-input>
+            </el-form-item>
+
+            <el-form-item label="视频" prop="headImg">
               <!--<el-input v-model="user.headImg"></el-input>-->
 
               <el-upload
                 class="upload-demo"
                 ref="upload"
                 name="videoFile"
-                action="http://localhost:9696/yingx/video/uploadHeadImg"
+                action="http://localhost:8989/yingxue/video/uploadVideo"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :on-success="uploadSuccess"
@@ -34,12 +38,12 @@
                 :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                <div slot="tip" class="el-upload__tip">只能上传mp4文件，且不超过20MB</div>
               </el-upload>
             </el-form-item>
 
             <el-form-item label="选择分类" prop="categoryId">
-              <el-select v-model="video.categoryId" clearable placeholder="请选择城市">
+              <el-select v-model="video.categoryId" clearable placeholder="请选择分类">
                 <el-option v-for="cate in categoryList" :key="cate.id" :label="cate.cateName" :value="cate.id"></el-option>
               </el-select>
             </el-form-item>
@@ -75,6 +79,7 @@ export default {
         videoPath: '',
         coverPath: '',
         categoryId:'',
+        userId:''
       },
       fileList: [],
       categoryList: [
@@ -92,7 +97,11 @@ export default {
         description: [
           {required: true, message: '请输入描述', trigger: 'blur'},
           {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
-        ]
+        ],
+        userId: [
+          {required: true, message: '请输入用户ID', trigger: 'blur'},
+          {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+        ],
       }
     }
   },
@@ -114,10 +123,17 @@ export default {
 
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
 
           //添加数据
           instance.post("/video/add",this.video).then((res)=>{
+            if (res.data.status === 200){
+              this.$message({
+                message: res.data.message, //提示框提示的信息
+                type: 'success',  //提示框颜色样式
+              });
+            }else {
+              this.$message.error(res.data.message);
+            }
             //切换到查所有组件
             this.$router.push({name:"ShowVideo"});
           });
@@ -131,9 +147,18 @@ export default {
       this.$refs[formName].resetFields();
     },
     uploadSuccess(response, file, fileList){
+      console.log(response)
       /*console.log(file);
       console.log(response.message);*/
       //接收后台文件上传的文件名并赋值给表单文件属性
+      if (response.status === 200){
+        this.$message({
+          message: response.message, //提示框提示的信息
+          type: 'success',  //提示框颜色样式
+        });
+      }else {
+        this.$message.error(response.message);
+      }
       this.video.videoPath=response.fileName;
       this.video.coverPath=response.coverName;
     },
