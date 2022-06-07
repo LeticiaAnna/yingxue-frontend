@@ -2,10 +2,25 @@
 
   <div >
     <h1 align="center"><strong>{{ msg }}</strong></h1>
-    <div ><br>
-    <router-link :to="{name:'AddUser'}"  ><el-button type="primary">添加账户</el-button></router-link><br><br>
+    <div >
 
+      <el-row>
+        <hr><br>
 
+        <el-col :span="6" :offset="6" >
+          <!-- 输入框 -->
+          <el-input v-model="content"></el-input>
+        </el-col>
+
+        <el-col :span="10" :offset="1">
+          <!-- 发送按钮 -->
+          <el-button type="success" @click="searchUser()">开始检索</el-button>
+        </el-col>
+
+      </el-row>
+
+      <br>
+      <br>
       <!--   表单数据展示   -->
       <el-table border style="width: 100%" :row-class-name="tableRowClassName" :data="users">
 
@@ -13,16 +28,23 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <!--    数据列    -->
         <el-table-column prop="id" label="用户id" width="90" sortable></el-table-column>
-        <el-table-column prop="username" label="用户名" width="100"></el-table-column>
+        <el-table-column label="用户名" width="100">
+          <template slot-scope="scope">
+            <div v-html="scope.row.username"></div>
+          </template>
+        </el-table-column>
         <el-table-column prop="password" label="密码" width="120"></el-table-column>
         <el-table-column prop="headImg" label="头像" width="80">
           <template slot-scope="scope">
             <el-image :src="scope.row.headImg" style="height: 50px"></el-image>
           </template>
         </el-table-column>
-
         <el-table-column prop="phone" label="手机号" width="120"></el-table-column>
-        <el-table-column prop="sign" label="签名" width="210"></el-table-column>
+        <el-table-column label="签名" width="210">
+          <template slot-scope="scope">
+            <div v-html="scope.row.sign"></div>
+          </template>
+        </el-table-column>
         <el-table-column prop="score" label="学分" width="90" sortable></el-table-column>
         <el-table-column prop="status" label="状态" width="100">
           <template slot-scope="scope">
@@ -44,24 +66,6 @@
 
       </el-table><br>
 
-      <!--   配置分页工具栏   -->
-      <div class="block" align="center">
-        <el-pagination
-          style="margin: 15px 0px"
-          background
-          :page-sizes="pageSizes"
-          :page-size="pageSize"
-          :current-page="page"
-          prev-text="上一页"
-          next-text="下一页"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="pageSizeChange"
-          @current-change="currentChange"
-        >
-        </el-pagination>
-      </div>
-
     </div>
   </div >
 
@@ -69,55 +73,33 @@
 
 <script>
 
-//import axios from 'axios'
-import instance from '../../util/request'  //导入asiox 的实例
+import instance from '../../util/request'
 
 export default {
-  name: "ShowUser",
-  data(){  //数据
+  name: "SearchVideo",
+  data(){
     return {
-      msg:"用户管理",
+      msg: "用户检索",
+      content:"",
       users:[],  //用户数据展示
-      page:1,  //指定当前页
-      total:0, //指定总条数
-      pageSizes:[2,3,5,10,15,20],  //配置每页展示数据数选项
-      pageSize:2,   //选择每页展示条数  必须在pageSizes中
-      search:"",  //搜索数据
     }
   },
-  created() {  //初始化页面触发函数
-
-    //查询所有数据
-    this.queryUser(this.page,this.pageSize);
-  },
-  methods:{  //自定函数
+  methods:{
     tableRowClassName({row, rowIndex}) {  //加载表格渲染斑马线样式
       if(rowIndex%2==0)return 'warning-row';
       if(rowIndex%2!=0)return 'success-row';
     },
-    pageSizeChange(size) {  //修改每页展示条数触发  参数：每页条数
-      console.log(`每页 ${size} 条` );
-      //查询所有数据
-      this.queryUser(1,size);
-      //从新为每页展示条数赋值
-      this.pageSize=size;
-    },
-    currentChange(page) {  //修改当前页触发  参数：当前页
-      console.log(`修改----当前页: ${page}`);
-      console.log(`修改----每页展示条数: ${this.pageSize}`);
-      //查询所有数据
-      this.queryUser(page,this.pageSize);
-    },
-    queryUser(page,pageSize){  //查询所有数据的方法
-      instance.post("/user/queryAllPage?page="+page+"&pageSize="+pageSize).then((res)=>{
+    searchUser() {   //提交表单触发的方法
 
-        //数据赋值
-        this.users=res.data.rows;
-        this.page=res.data.page;
-        this.total=res.data.total;
+      /**1.获取输入框内容*/
+      console.log(this.content);
 
-        //console.log(res);
-      })
+      /**2.提交输入框*/
+      instance.get("/user/searchUser?content="+this.content).then((res)=>{
+        /**3.返回数据给表单数据赋值*/
+        this.users=res.data;
+        console.log(this.users)
+      });
     },
     deleteUser(id){
       console.log(id)
@@ -125,8 +107,6 @@ export default {
       if(window.confirm("您确定要删除该数据吗?")){
         /**2.发送请求删除数据*/
         instance.post("/user/delete",{"id":id}).then((res)=>{
-          /**3.查询所有数据*/
-          this.queryUser(1,this.pageSize);
 
           /**4.删除提示框*/
           if (res.data.status === 200){
@@ -147,8 +127,6 @@ export default {
         /**2.发送修改请求*/
         instance.post("/user/update",{"id":row.id,"status":"0"}).then((res)=>{
           console.log(res)
-          /**3.查询所有数据*/
-          this.queryUser(this.page,this.pageSize);
 
           /**4.修改提示框*/
           if (res.data.status === 200){
@@ -164,8 +142,6 @@ export default {
       }else{
         /**2.发送修改请求*/
         instance.post("/user/update",{"id":row.id,"status":"1"}).then((res)=>{
-          /**3.查询所有数据*/
-          this.queryUser(this.page,this.pageSize);
 
           /**4.修改提示框*/
           if (res.data.status === 200){
@@ -184,9 +160,8 @@ export default {
     }
   }
 }
-</script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+</script>
 <style>
 
 .el-table .warning-row {
@@ -218,5 +193,3 @@ a {
   background-color: aquamarine;
 }
 </style>
-
-

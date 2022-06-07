@@ -43,6 +43,9 @@
               <el-menu-item index="2-3">
                 <router-link to="/userMap" ><el-button type="warning">用户分布</el-button></router-link>
               </el-menu-item>
+              <el-menu-item index="2-4">
+                <router-link to="/searchUser"><el-button type="warning">用户搜索</el-button></router-link>
+              </el-menu-item>
             </el-submenu>
 
             <el-submenu index="3">
