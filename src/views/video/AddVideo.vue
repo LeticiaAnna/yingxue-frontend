@@ -38,7 +38,7 @@
                 :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传mp4文件，且不超过20MB</div>
+                <div slot="tip" class="el-upload__tip">只能上传mp4文件，且不超过100MB</div>
               </el-upload>
             </el-form-item>
 
@@ -92,11 +92,11 @@ export default {
       rules: {
         title: [
           {required: true, message: '请输入标题', trigger: 'blur'},
-          {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+          {min: 3, max: 30, message: '长度在 3 到 30 个字符', trigger: 'blur'}
         ],
         description: [
           {required: true, message: '请输入描述', trigger: 'blur'},
-          {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+          {min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur'}
         ],
         userId: [
           {required: true, message: '请输入用户ID', trigger: 'blur'},
@@ -131,11 +131,11 @@ export default {
                 message: res.data.message, //提示框提示的信息
                 type: 'success',  //提示框颜色样式
               });
+              //切换到查所有组件
+              this.$router.push({name:"ShowVideo"});
             }else {
               this.$message.error(res.data.message);
             }
-            //切换到查所有组件
-            this.$router.push({name:"ShowVideo"});
           });
         } else {
           console.log('error submit!!');
@@ -163,6 +163,10 @@ export default {
       this.video.coverPath=response.coverName;
     },
     submitUpload() {   //点击文件上传触发
+      this.$message({
+        message: '上传中...请耐心等待...上传完成将弹出完成提示',
+        type: 'warning'
+      });
       this.$refs.upload.submit();
     },
     handleRemove(file, fileList) {   //点击文件列表中已上传的文件时的钩子

@@ -12,11 +12,11 @@
         <!--    复选框列    -->
         <el-table-column type="selection" width="55"></el-table-column>
         <!--    数据列    -->
-        <el-table-column prop="id" label="视频id" width="100" ></el-table-column>
-        <el-table-column prop="title" label="标题" width="80"></el-table-column>
-        <el-table-column prop="description" label="描述"></el-table-column>
+        <el-table-column prop="id" label="id" width="40" ></el-table-column>
+        <el-table-column prop="title" label="标题" width="300"></el-table-column>
+        <el-table-column prop="description" label="描述" width="500"></el-table-column>
 
-        <el-table-column prop="videoPath" label="视频"  width="350" >
+        <el-table-column prop="videoPath" label="视频"  width="325" >
           <template slot-scope="scope">
             <video :ref="'videoPlayer' + index" controls="controls" width="300" height="200px" :src="scope.row.videoPath" :poster="scope.row.coverPath" >
 <!--              <source :src="scope.row.videoPath" type="video/mp4">您的浏览器不支持Video标签。-->
@@ -24,7 +24,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="status" label="状态">
+        <el-table-column prop="status" label="状态" width="95">
           <template slot-scope="scope">
             <el-button type="warning" v-if="scope.row.status==0" @click="changeStatus(scope.row)" >冻结</el-button>
             <el-button type="success" v-else @click="changeStatus(scope.row)" >正常</el-button>
@@ -32,10 +32,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="createTime" label="创建时间" ></el-table-column>
-        <el-table-column prop="categoryId" label="类别Id" ></el-table-column>
-        <el-table-column prop="userId" label="用户Id" ></el-table-column>
-        <el-table-column prop="groupId" label="分组Id" ></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="100"></el-table-column>
+        <el-table-column prop="categoryId" label="类别Id" width="70"></el-table-column>
+        <el-table-column prop="userId" label="用户Id" width="70"></el-table-column>
+        <el-table-column prop="groupId" label="分组Id" width="70"></el-table-column>
 
         <!--    操作列    -->
         <el-table-column >
@@ -76,7 +76,7 @@
 <script>
 
 //import axios from 'axios'
-import instance from '../../util/request'  //导入asiox 的实例
+import instance from '../../util/request'  //导入 axios 的实例
 
 export default {
   name: "ShowVideo",

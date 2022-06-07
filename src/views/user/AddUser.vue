@@ -227,6 +227,10 @@ export default {
       this.user.headImg=response.fileName;
     },
     submitUpload() {   //点击文件上传触发
+      this.$message({
+        message: '上传中...请耐心等待...上传完成将弹出完成提示',
+        type: 'warning'
+      });
       this.$refs.upload.submit();
     },
     handleRemove(file, fileList) {   //文件列表移除文件时的钩子
