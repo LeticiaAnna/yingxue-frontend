@@ -22,6 +22,7 @@ export default new Router({
         {name: 'AddUser',path: 'addUser',component: ()=> import("../views/user/AddUser")},
         {name: 'UpdateUser',path: 'updateUser',component: ()=> import("../views/user/UpdateUser")},
         {name: 'SearchUser',path: 'searchUser',component: ()=> import("../views/user/SearchUser")},
+        {name: 'UserEcharts',path: 'UserEcharts',component: ()=> import("../views/user/UserEcharts")},
         {name: 'ShowCategory',path: 'showCategory',component: ()=> import("../views/category/ShowCategory")},
         {name: 'AddCategory',path: 'addCategory',component: ()=> import("../views/category/AddCategory")},
         {name: 'UpdateCategory',path: 'updateCategory',component: ()=> import("../views/category/UpdateCategory")},

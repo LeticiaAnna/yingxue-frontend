@@ -38,7 +38,7 @@
                 <router-link to="/showUser"><el-button type="success">用户信息</el-button></router-link>
               </el-menu-item>
               <el-menu-item index="2-2">
-                <router-link to="/userCount" ><el-button type="warning">用户统计</el-button></router-link>
+                <router-link to="/UserEcharts" ><el-button type="warning">用户统计</el-button></router-link>
               </el-menu-item>
               <el-menu-item index="2-3">
                 <router-link to="/userMap" ><el-button type="warning">用户分布</el-button></router-link>

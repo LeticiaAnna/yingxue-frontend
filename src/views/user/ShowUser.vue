@@ -3,7 +3,10 @@
   <div >
     <h1 align="center"><strong>{{ msg }}</strong></h1>
     <div ><br>
-    <router-link :to="{name:'AddUser'}"  ><el-button type="primary">添加账户</el-button></router-link><br><br>
+    <router-link :to="{name:'AddUser'}"  >
+      <el-button type="primary">添加账户</el-button></router-link>
+      <el-button type="success" @click="exportUser">用户信息下载</el-button>
+      <br><br>
 
 
       <!--   表单数据展示   -->
@@ -181,6 +184,21 @@ export default {
     },
     updateUser(id){  //修改数据的方法
       this.$router.push({name:"UpdateUser",params:{id:id}});
+    },
+    exportUser(){
+      instance.post("/user/exportUser").then((res)=>{
+        console.log(res)
+
+        /**4.修改提示框*/
+        if (res.data.status === 200){
+          this.$message({
+            message: res.data.message, //提示框提示的信息
+            type: 'success',  //提示框颜色样式
+          });
+        }else {
+          this.$message.error(res.data.message);
+        }
+      });
     }
   }
 }
